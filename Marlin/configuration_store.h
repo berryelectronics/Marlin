@@ -19,11 +19,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-
+//Matthias: Uses an external I2C EEPROM (AT24C256)
 #ifndef CONFIGURATION_STORE_H
 #define CONFIGURATION_STORE_H
 
 #include "MarlinConfig.h"
+#include "AT24C1024.h"
 
 void Config_ResetDefault();
 

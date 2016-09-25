@@ -28,9 +28,9 @@
 #include <string.h>
 #include <inttypes.h>
 
-#include <util/delay.h>
+//#include <util/delay.h>
 #include <avr/pgmspace.h>
-#include <avr/eeprom.h>
+#include <EEPROM.h>
 #include <avr/interrupt.h>
 
 #include "MarlinConfig.h"

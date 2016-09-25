@@ -64,7 +64,7 @@ typedef enum {
  * Not yet widely applied
  */
 enum DebugFlags {
-  DEBUG_NONE          = 0,
+  DEBUG_NOT          = 0,
   DEBUG_ECHO          = _BV(0), ///< Echo commands in order as they are processed
   DEBUG_INFO          = _BV(1), ///< Print messages for code that has debug output
   DEBUG_ERRORS        = _BV(2), ///< Not implemented

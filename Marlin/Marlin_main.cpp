@@ -281,7 +281,7 @@
 
 bool Running = true;
 
-uint8_t marlin_debug_flags = DEBUG_NONE;
+uint8_t marlin_debug_flags = DEBUG_NOT;
 
 float current_position[NUM_AXIS] = { 0.0 };
 static float destination[NUM_AXIS] = { 0.0 };
@@ -668,7 +668,9 @@ static bool drain_queued_commands_P() {
   if (queued_commands_P != NULL) {
     size_t i = 0;
     char c, cmd[30];
-    strncpy_P(cmd, queued_commands_P, sizeof(cmd) - 1);
+	//Matthias: Missing???
+    //strncpy_P(cmd, queued_commands_P, sizeof(cmd) - 1);
+	strcpy_P(cmd, queued_commands_P);
     cmd[sizeof(cmd) - 1] = '\0';
     while ((c = cmd[i]) && c != '\n') i++; // find the end of this gcode command
     cmd[i] = '\0';
@@ -876,6 +878,8 @@ void setup() {
   SERIAL_PROTOCOLLNPGM("start");
   SERIAL_ECHO_START;
 
+  //Matthias: not supported by stm32duino bootloader????
+  /*
   // Check startup - does nothing if bootloader sets MCUSR to 0
   byte mcu = MCUSR;
   if (mcu & 1) SERIAL_ECHOLNPGM(MSG_POWERUP);
@@ -884,6 +888,7 @@ void setup() {
   if (mcu & 8) SERIAL_ECHOLNPGM(MSG_WATCHDOG_RESET);
   if (mcu & 32) SERIAL_ECHOLNPGM(MSG_SOFTWARE_RESET);
   MCUSR = 0;
+  */
 
   SERIAL_ECHOPGM(MSG_MARLIN);
   SERIAL_ECHOLNPGM(" " SHORT_BUILD_VERSION);
@@ -8662,7 +8667,8 @@ void kill(const char* lcd_msg) {
 
   for (int i = 5; i--;) delay(100); // Wait a short time
 
-  cli(); // Stop interrupts
+  //Matthias: Alternative for STM32?????
+  noInterrupts(); // Stop interrupts
   thermalManager.disable_all_heaters();
   disable_all_steppers();
 

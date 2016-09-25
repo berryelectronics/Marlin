@@ -143,8 +143,8 @@ const char version[4] = EEPROM_VERSION;
 void _EEPROM_writeData(int &pos, uint8_t* value, uint8_t size) {
   uint8_t c;
   while (size--) {
-    eeprom_write_byte((unsigned char*)pos, *value);
-    c = eeprom_read_byte((unsigned char*)pos);
+    EEPROM1024.write((unsigned char)pos, *value);
+    c = EEPROM1024.read((unsigned char)pos);
     if (c != *value) {
       SERIAL_ECHO_START;
       SERIAL_ECHOLNPGM(MSG_ERR_EEPROM_WRITE);
@@ -156,7 +156,7 @@ void _EEPROM_writeData(int &pos, uint8_t* value, uint8_t size) {
 }
 void _EEPROM_readData(int &pos, uint8_t* value, uint8_t size) {
   do {
-    uint8_t c = eeprom_read_byte((unsigned char*)pos);
+    uint8_t c = EEPROM1024.read((unsigned char)pos);
     *value = c;
     eeprom_checksum += c;
     pos++;

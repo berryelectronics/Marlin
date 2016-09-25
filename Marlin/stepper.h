@@ -105,7 +105,7 @@ class Stepper {
     static volatile unsigned long step_events_completed; // The number of step events executed in the current block
 
     #if ENABLED(ADVANCE) || ENABLED(LIN_ADVANCE)
-      static unsigned char old_OCR0A;
+      //static unsigned char old_OCR0A;
       static volatile unsigned char eISR_Rate;
       #if ENABLED(LIN_ADVANCE)
         static volatile int e_steps[E_STEPPERS];
@@ -126,7 +126,7 @@ class Stepper {
     //unsigned long accelerate_until, decelerate_after, acceleration_rate, initial_rate, final_rate, nominal_rate;
     static unsigned short acc_step_rate; // needed for deceleration start point
     static uint8_t step_loops, step_loops_nominal;
-    static unsigned short OCR1A_nominal;
+    //static unsigned short OCR1A_nominal;
 
     static volatile long endstops_trigsteps[3];
     static volatile long endstops_stepsTotal, endstops_stepsDone;
@@ -293,14 +293,14 @@ class Stepper {
       NOLESS(step_rate, F_CPU / 500000);
       step_rate -= F_CPU / 500000; // Correct for minimal speed
       if (step_rate >= (8 * 256)) { // higher step rate
-        unsigned short table_address = (unsigned short)&speed_lookuptable_fast[(unsigned char)(step_rate >> 8)][0];
+        unsigned short table_address = (unsigned short)*(&speed_lookuptable_fast[(unsigned char)(step_rate >> 8)][0]);
         unsigned char tmp_step_rate = (step_rate & 0x00ff);
         unsigned short gain = (unsigned short)pgm_read_word_near(table_address + 2);
         MultiU16X8toH16(timer, tmp_step_rate, gain);
         timer = (unsigned short)pgm_read_word_near(table_address) - timer;
       }
       else { // lower step rates
-        unsigned short table_address = (unsigned short)&speed_lookuptable_slow[0][0];
+        unsigned short table_address = (unsigned short)*(&speed_lookuptable_slow[0][0]);
         table_address += ((step_rate) >> 1) & 0xfffc;
         timer = (unsigned short)pgm_read_word_near(table_address);
         timer -= (((unsigned short)pgm_read_word_near(table_address + 2) * (unsigned char)(step_rate & 0x0007)) >> 3);
@@ -347,12 +347,12 @@ class Stepper {
 
       deceleration_time = 0;
       // step_rate to timer interval
-      OCR1A_nominal = calc_timer(current_block->nominal_rate);
+      //OCR1A_nominal = calc_timer(current_block->nominal_rate);
       // make a note of the number of step loops required at nominal speed
       step_loops_nominal = step_loops;
       acc_step_rate = current_block->initial_rate;
       acceleration_time = calc_timer(acc_step_rate);
-      OCR1A = acceleration_time;
+      //OCR1A = acceleration_time;
       
       #if ENABLED(LIN_ADVANCE)
         if (current_block->use_advance_lead) {
